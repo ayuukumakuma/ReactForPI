@@ -1,11 +1,13 @@
-import './App.css'
 import { Header } from './components/Header'
+import { Box } from '@chakra-ui/react'
+import { TicketNumber } from './components/TicketNumber'
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <Box className="App" h={'100vh'} w={'100vw'} bg={'gray.50'} pt={'76.5px'}>
       <Header />
-    </div>
+      <TicketNumber />
+    </Box>
   )
 }
 
