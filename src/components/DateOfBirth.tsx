@@ -18,7 +18,7 @@ import {
 import { useState } from 'react'
 
 export const DateOfBirth = () => {
-  type Era = 'ChristianEra' | 'Taisho' | 'Showa' | 'Heisei' | 'Reiwa'
+  // type Era = 'ChristianEra' | 'Taisho' | 'Showa' | 'Heisei' | 'Reiwa'
   const [date, setDate] = useState<string>('')
   // const [era, setEra] = useState<Era>('ChristianEra')
 
