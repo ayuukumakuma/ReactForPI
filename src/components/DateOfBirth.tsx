@@ -1,48 +1,70 @@
 import {
+  Box,
   HStack,
   PinInput,
   PinInputField,
-  Box,
-  Text,
   Button,
+  Text,
   ButtonGroup,
   Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverCloseButton,
   PopoverArrow,
+  PopoverContent,
+  PopoverTrigger,
+  PopoverCloseButton,
+  PopoverHeader,
   PopoverBody,
+  Spacer,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 
-export const TicketNumber = () => {
-  const [ticket, setTicket] = useState<string>('')
+export const DateOfBirth = () => {
+  type Era = 'ChristianEra' | 'Taisho' | 'Showa' | 'Heisei' | 'Reiwa'
+  const [date, setDate] = useState<string>('')
+  const [era, setEra] = useState<Era>('ChristianEra')
 
-  const handleOnChange = (number: string) => {
-    setTicket(number)
+  const handleOnChange = (value: string) => {
+    setDate(value)
   }
   const handleOnClear = () => {
-    setTicket('')
+    setDate('')
   }
   const handleOnCopy = (onlyNumber: boolean) => {
     if (onlyNumber) {
-      navigator.clipboard.writeText(ticket).then(() => console.log('成功'))
+      navigator.clipboard.writeText(date).then(() => console.log('成功'))
     } else {
-      const entryTicket = '■接種券番号：' + ticket
+      const entryTicket = '■生年月日：' + date
       navigator.clipboard.writeText(entryTicket).then(() => console.log('成功'))
     }
   }
   return (
     <Box>
-      <Text fontSize={'2xl'} m={6}>
-        接種券番号
+      <Text fontSize={'2xl'} mx={6} mt={6}>
+        生年月日
       </Text>
+
+      <ButtonGroup
+        m={6}
+        p={3}
+        rounded={'md'}
+        size={'md'}
+        variant={'outline'}
+        colorScheme={'cyan'}
+        border={'2px'}
+        borderColor={'gray.200'}
+      >
+        <Button _hover={{ bg: 'cyan.100' }}>西暦</Button>
+        <Spacer mx={3} />
+        <Button _hover={{ bg: 'cyan.100' }}>大正</Button>
+        <Button _hover={{ bg: 'cyan.100' }}>昭和</Button>
+        <Button _hover={{ bg: 'cyan.100' }}>平成</Button>
+        <Button _hover={{ bg: 'cyan.100' }}>令和</Button>
+      </ButtonGroup>
+
       <HStack mx={6}>
         <PinInput
           size={'lg'}
-          value={ticket}
           focusBorderColor={'cyan.500'}
+          value={date}
           placeholder={'-'}
           onChange={(e) => handleOnChange(e)}
         >
@@ -50,17 +72,28 @@ export const TicketNumber = () => {
           <PinInputField />
           <PinInputField />
           <PinInputField />
+          <Text fontSize={'lg'} pr={4}>
+            年
+          </Text>
           <PinInputField />
           <PinInputField />
+          <Text fontSize={'lg'} pr={4}>
+            月
+          </Text>
           <PinInputField />
           <PinInputField />
-          <PinInputField />
-          <PinInputField />
+          <Text fontSize={'lg'}>日</Text>
         </PinInput>
       </HStack>
       <HStack>
         <Text fontSize={'4xl'} m={6} w={'280px'}>
-          {ticket === '' ? '- - - - - - - - - -' : ticket}
+          {date === ''
+            ? '- - - - - - - -'
+            : date.slice(0, 4) +
+              '-' +
+              date.slice(4, 6) +
+              '-' +
+              date.slice(6, 8)}
         </Text>
         <Button
           size={'md'}
@@ -72,7 +105,7 @@ export const TicketNumber = () => {
           クリア
         </Button>
       </HStack>
-      {ticket.length === 10 ? (
+      {date.length === 8 ? (
         <ButtonGroup variant={'outline'} colorScheme={'cyan'} mx={6}>
           <Popover closeDelay={2000}>
             <PopoverTrigger>
