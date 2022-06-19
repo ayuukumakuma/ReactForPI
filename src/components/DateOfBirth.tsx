@@ -5,61 +5,77 @@ import {
   PinInputField,
   Button,
   Text,
-  ButtonGroup,
-  Popover,
-  PopoverArrow,
-  PopoverContent,
-  PopoverTrigger,
-  PopoverCloseButton,
-  PopoverHeader,
-  PopoverBody,
-  Spacer,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { CopyButtonGroup } from './CopyButtonGroup'
+import { EraRadioGroup } from './EraRadioGroup'
 
 export const DateOfBirth = () => {
-  // type Era = 'ChristianEra' | 'Taisho' | 'Showa' | 'Heisei' | 'Reiwa'
+  type Era = '西暦' | '大正' | '昭和' | '平成' | '令和'
   const [date, setDate] = useState<string>('')
-  // const [era, setEra] = useState<Era>('ChristianEra')
+  const [era, setEra] = useState<Era>('西暦')
+  const [formatDate, setFormatDate] = useState<string>('')
 
   const handleOnChange = (value: string) => {
     setDate(value)
+    if (era !== '西暦') {
+      if (value.length === 3) {
+        switch (era) {
+          case '大正':
+            const year_t = date.slice(0, 2)
+            const AD_t = Number(year_t) + 11 + 1900
+            setFormatDate(String(AD_t) + '-')
+            break
+          case '昭和':
+            const year_s = date.slice(0, 2)
+            const AD_s = Number(year_s) + 25 + 1900
+            setFormatDate(String(AD_s) + '-')
+            break
+          case '平成':
+            const year_h = date.slice(0, 2)
+            const AD_h = Number(year_h) - 12 + 2000
+            setFormatDate(String(AD_h) + '-')
+            break
+          case '令和':
+            const year_r = date.slice(0, 2)
+            const AD_r = Number(year_r) + 18 + 2000
+            setFormatDate(String(AD_r) + '-')
+            break
+        }
+      } else if (value.length === 5) {
+        setFormatDate(formatDate + value.slice(2, 4) + '-')
+      } else if (value.length === 6) {
+        if (formatDate.length < 10) {
+          setFormatDate(formatDate + value.slice(4, 6))
+        }
+      }
+    } else {
+      switch (value.length) {
+        case 4:
+          setFormatDate(value + '-')
+          break
+        case 6:
+          setFormatDate(formatDate + value.slice(4, 6) + '-')
+          break
+        case 8:
+          if (formatDate.length < 10) {
+            setFormatDate(formatDate + value.slice(6, 8))
+          }
+          break
+      }
+    }
   }
   const handleOnClear = () => {
     setDate('')
+    setFormatDate('')
   }
-  const handleOnCopy = (onlyNumber: boolean) => {
-    if (onlyNumber) {
-      navigator.clipboard.writeText(date).then(() => console.log('成功'))
-    } else {
-      const entryTicket = '■生年月日：' + date
-      navigator.clipboard.writeText(entryTicket).then(() => console.log('成功'))
-    }
-  }
+
   return (
     <Box>
       <Text fontSize={'2xl'} mx={6} mt={6}>
         生年月日
       </Text>
-
-      <ButtonGroup
-        m={6}
-        p={3}
-        rounded={'md'}
-        size={'md'}
-        variant={'outline'}
-        colorScheme={'cyan'}
-        border={'2px'}
-        borderColor={'gray.200'}
-      >
-        <Button _hover={{ bg: 'cyan.100' }}>西暦</Button>
-        <Spacer mx={3} />
-        <Button _hover={{ bg: 'cyan.100' }}>大正</Button>
-        <Button _hover={{ bg: 'cyan.100' }}>昭和</Button>
-        <Button _hover={{ bg: 'cyan.100' }}>平成</Button>
-        <Button _hover={{ bg: 'cyan.100' }}>令和</Button>
-      </ButtonGroup>
-
+      <EraRadioGroup setEra={setEra} setDate={setDate} setFormatDate={setFormatDate} />
       <HStack mx={6}>
         <PinInput
           size={'lg'}
@@ -68,8 +84,12 @@ export const DateOfBirth = () => {
           placeholder={'-'}
           onChange={(e) => handleOnChange(e)}
         >
-          <PinInputField />
-          <PinInputField />
+          {era === '西暦' ? (
+            <PinInputField />
+          ) : (
+            <Text fontSize={'lg'}>{era}</Text>
+          )}
+          {era === '西暦' ? <PinInputField /> : ''}
           <PinInputField />
           <PinInputField />
           <Text fontSize={'lg'} pr={4}>
@@ -87,13 +107,7 @@ export const DateOfBirth = () => {
       </HStack>
       <HStack>
         <Text fontSize={'4xl'} m={6} w={'280px'}>
-          {date === ''
-            ? '- - - - - - - -'
-            : date.slice(0, 4) +
-              '-' +
-              date.slice(4, 6) +
-              '-' +
-              date.slice(6, 8)}
+          {date == '' ? '- - - - - - - -' : formatDate}
         </Text>
         <Button
           size={'md'}
@@ -106,38 +120,7 @@ export const DateOfBirth = () => {
         </Button>
       </HStack>
       {date.length === 8 ? (
-        <ButtonGroup variant={'outline'} colorScheme={'cyan'} mx={6}>
-          <Popover closeDelay={2000}>
-            <PopoverTrigger>
-              <Button
-                _hover={{ bg: 'cyan.100' }}
-                onClick={() => handleOnCopy(true)}
-              >
-                数字だけコピー
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent w={'150px'}>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>コピー完了</PopoverHeader>
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger>
-              <Button
-                _hover={{ bg: 'cyan.100' }}
-                onClick={() => handleOnCopy(false)}
-              >
-                記述形式でコピー
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent w={'150px'}>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverBody>コピー完了</PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </ButtonGroup>
+        <CopyButtonGroup content={formatDate} text={'生年月日'} />
       ) : (
         ''
       )}

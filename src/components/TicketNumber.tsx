@@ -15,6 +15,7 @@ import {
   PopoverBody,
 } from '@chakra-ui/react'
 import { useState } from 'react'
+import { CopyButtonGroup } from './CopyButtonGroup'
 
 export const TicketNumber = () => {
   const [ticket, setTicket] = useState<string>('')
@@ -25,14 +26,7 @@ export const TicketNumber = () => {
   const handleOnClear = () => {
     setTicket('')
   }
-  const handleOnCopy = (onlyNumber: boolean) => {
-    if (onlyNumber) {
-      navigator.clipboard.writeText(ticket).then(() => console.log('成功'))
-    } else {
-      const entryTicket = '■接種券番号：' + ticket
-      navigator.clipboard.writeText(entryTicket).then(() => console.log('成功'))
-    }
-  }
+
   return (
     <Box>
       <Text fontSize={'2xl'} m={6}>
@@ -73,38 +67,7 @@ export const TicketNumber = () => {
         </Button>
       </HStack>
       {ticket.length === 10 ? (
-        <ButtonGroup variant={'outline'} colorScheme={'cyan'} mx={6}>
-          <Popover closeDelay={2000}>
-            <PopoverTrigger>
-              <Button
-                _hover={{ bg: 'cyan.100' }}
-                onClick={() => handleOnCopy(true)}
-              >
-                数字だけコピー
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent w={'150px'}>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverHeader>コピー完了</PopoverHeader>
-            </PopoverContent>
-          </Popover>
-          <Popover>
-            <PopoverTrigger>
-              <Button
-                _hover={{ bg: 'cyan.100' }}
-                onClick={() => handleOnCopy(false)}
-              >
-                記述形式でコピー
-              </Button>
-            </PopoverTrigger>
-            <PopoverContent w={'150px'}>
-              <PopoverArrow />
-              <PopoverCloseButton />
-              <PopoverBody>コピー完了</PopoverBody>
-            </PopoverContent>
-          </Popover>
-        </ButtonGroup>
+        <CopyButtonGroup content={ticket} text={'接種券番号'} />
       ) : (
         ''
       )}
