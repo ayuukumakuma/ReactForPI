@@ -119,7 +119,7 @@ export const DateOfBirth = () => {
           クリア
         </Button>
       </HStack>
-      {date.length === 10 ? (
+      {formatDate.length === 10 ? (
         <CopyButtonGroup content={formatDate} text={'生年月日'} />
       ) : (
         ''
