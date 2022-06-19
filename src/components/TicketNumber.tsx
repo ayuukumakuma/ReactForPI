@@ -5,14 +5,6 @@ import {
   Box,
   Text,
   Button,
-  ButtonGroup,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverCloseButton,
-  PopoverArrow,
-  PopoverBody,
 } from '@chakra-ui/react'
 import { useState } from 'react'
 import { CopyButtonGroup } from './CopyButtonGroup'
