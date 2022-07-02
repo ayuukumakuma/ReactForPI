@@ -5,14 +5,14 @@ import { EraRadio } from './EraRadio'
 export const EraRadioGroup = (props: Props) => {
   const eras = ['西暦', '大正', '昭和', '平成', '令和']
   const handleOnChange = (value: string) => {
-   props.setEra(value)
-   props.setDate('')
-   props.setFormatDate('')
+    props.setEra(value)
+    props.setDate('')
+    props.setFormatDate('')
   }
   const { getRootProps, getRadioProps } = useRadioGroup({
-   name: 'Era',
-   defaultValue: '西暦',
-   onChange: handleOnChange,
+    name: 'Era',
+    defaultValue: '西暦',
+    onChange: handleOnChange,
   })
 
   const group = getRootProps()

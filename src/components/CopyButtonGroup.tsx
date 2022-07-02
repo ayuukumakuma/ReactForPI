@@ -12,14 +12,16 @@ import {
 import { Props } from 'framer-motion/types/types'
 
 export const CopyButtonGroup = (props: Props) => {
- const handleOnCopy = (onlyNumber: boolean) => {
-  if (onlyNumber) {
-   navigator.clipboard.writeText(props.content).then(() => console.log('成功'))
- } else {
-   const entryTicket = `■${props.text}：` + props.content
-   navigator.clipboard.writeText(entryTicket).then(() => console.log('成功'))
- }
- }
+  const handleOnCopy = (onlyNumber: boolean) => {
+    if (onlyNumber) {
+      navigator.clipboard
+        .writeText(props.content)
+        .then(() => console.log('成功'))
+    } else {
+      const entryTicket = `■${props.text}：` + props.content
+      navigator.clipboard.writeText(entryTicket).then(() => console.log('成功'))
+    }
+  }
   return (
     <ButtonGroup variant={'outline'} colorScheme={'cyan'} mx={6}>
       <Popover closeDelay={2000}>

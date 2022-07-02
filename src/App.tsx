@@ -2,6 +2,7 @@ import { Header } from './components/Header'
 import { Box, Divider } from '@chakra-ui/react'
 import { TicketNumber } from './components/TicketNumber'
 import { DateOfBirth } from './components/DateOfBirth'
+import { TellNumber } from './components/TellNumber'
 
 const App = () => {
   return (
@@ -10,6 +11,8 @@ const App = () => {
       <TicketNumber />
       <Divider />
       <DateOfBirth />
+      <Divider/>
+      <TellNumber />
     </Box>
   )
 }
